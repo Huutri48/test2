@@ -8,7 +8,6 @@ const reducerApi = (state = stateDefault, action) => {
   switch (action.type) {
     case ActionType.SUCCESS:
       state.data = action.payload;
-      
       state.error = null;
       return { ...state };
     case ActionType.ERROR:

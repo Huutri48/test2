@@ -8,9 +8,7 @@ class App extends Component {
   }
   renderInfo = () => {
     const { data } = this.props;
-    console.log(data);
     return data?.hits.map((item, index) => {
-      console.log(item?.created_at);
       return (
         <div key={index} className="col-4 text-center text-white">
           <div className=" bg-dark m-4 p-2">
