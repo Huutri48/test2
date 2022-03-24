@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import "./App.css";
+import { apiFetch } from "./reducer/action";
+class App extends Component {
+  componentDidMount() {
+    this.props.apiFetchData();
+  }
+  renderInfo = () => {
+    const { data } = this.props;
+    console.log(data);
+    return data?.hits.map((item, index) => {
+      console.log(item?.created_at);
+      return (
+        <div key={index} className="col-4 text-center text-white">
+          <div className=" bg-dark m-4 p-2">
+            <p>
+              <strong>Title:</strong> {item?.title}
+            </p>
+            <p>
+              <strong>Url:</strong> {item?.url}
+            </p>
+            <p className="m-0">
+              <strong>Created_at: </strong>
+              {new Date(item?.created_at).toLocaleTimeString()}{" "}
+              {new Date(item?.created_at).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      );
+    });
+  };
+  render() {
+    return (
+      <div>
+        <div className="row">{this.renderInfo()}</div>
+      </div>
+    );
+  }
 }
-
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    data: state.reducerApi.data,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    apiFetchData: () => {
+      dispatch(apiFetch());
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
